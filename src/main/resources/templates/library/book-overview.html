@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Overview - MyLibrary</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f8f9fa; /* Light gray background */
+      color: #333; /* Dark text color for readability */
+    }
+    .nav-bar-items {
+      color: #ffffff
+    }
+    .navbar {
+      background-color: #0056b3; /* Dark blue for navbar */
+    }
+    .navbar-brand:hover, .nav-link:hover {
+      color: #ffc107 !important; /* Highlight links with yellow on hover */
+    }
+    section {
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: 2rem auto;
+    }
+    h2 {
+      color: #0056b3; /* Dark blue for section title */
+      margin-bottom: 1rem;
+    }
+    .btn-primary {
+      background-color: #0069d9;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+    .nav-tabs .nav-link {
+      background-color: white;
+      color: #0056b3; /* Default color for 'All' */
+    }
+    .nav-tabs .nav-link#available-tab {
+      color: green; /* Default color for 'Available' */
+    }
+    .nav-tabs .nav-link#unavailable-tab {
+      color: red; /* Default color for 'Unavailable' */
+    }
+    .nav-tabs .nav-link.active#all-tab {
+      background-color: #0056b3;
+      color: white;
+    }
+    .nav-tabs .nav-link.active#available-tab {
+      background-color: green;
+      color: white;
+    }
+    .nav-tabs .nav-link.active#unavailable-tab {
+      background-color: red;
+      color: white;
+    }
+    .table thead {
+      background-color: #0056b3; /* Dark blue for table header */
+      color: #fff;
+    }
+    .table tbody tr:hover {
+      background-color: #f1f3f5; /* Light gray on hover */
+    }
+  </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand nav-bar-items" href="#">MyLibrary</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link nav-bar-items" href="/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link nav-bar-items" href="/books">Books</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link nav-bar-items" href="/librarians">Librarians</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<section class="container">
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>All Books</h2>
+    <!-- Create New Book Button -->
+    <a href="/create-book" class="btn btn-primary mb-3">Create New Book</a>
+  </div>
+  <div class="form-group">
+    <input type="text" id="searchBar" class="form-control" placeholder="Search books..." onkeyup="filterBooks()">
+  </div>
+
+  <!-- Availability Tabs -->
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+      <a class="nav-link active" id="all-tab" href="#" onclick="filterByAvailability('all')">All</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="available-tab" href="#" onclick="filterByAvailability('Available')">Available</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="unavailable-tab" href="#" onclick="filterByAvailability('Unavailable')">Unavailable</a>
+    </li>
+  </ul>
+
+  <!-- Books Table -->
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Availability</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${allBooks}" th:attr="data-availability=${book.isAvailable}">
+      <td th:text="${book.name}">Book Name</td>
+      <td th:text="${book.category}">Category</td>
+      <td th:text="${book.isAvailable}" th:classappend="${book.isAvailable == 'Unavailable' ? 'text-danger' : 'text-success'}">Availability</td>
+      <td>
+        <a th:href="@{/view-book/{id}(id=${book.id})}" class="btn btn-info btn-sm">View</a>
+        <a th:href="@{/edit-book/{id}(id=${book.id})}" class="btn btn-warning btn-sm">Edit</a>
+        <a th:href="@{/delete-book/{id}(id=${book.id})}" class="btn btn-danger btn-sm"
+           onclick="return confirm('Are you sure you want to delete this book?');">Delete</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+
+<script>
+  function filterBooks() {
+    const input = document.getElementById("searchBar").value.toLowerCase();
+    const rows = document.querySelectorAll("tbody tr");
+
+    rows.forEach(row => {
+      const bookName = row.querySelector("td:first-child").innerText.toLowerCase();
+      row.style.display = bookName.includes(input) ? "" : "none";
+    });
+  }
+
+  function filterByAvailability(status) {
+    const rows = document.querySelectorAll("tbody tr");
+
+    rows.forEach(row => {
+      const availability = row.getAttribute("data-availability");
+      row.style.display = (status === "all" || availability === status) ? "" : "none";
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+    document.getElementById(status === "all" ? "all-tab" : (status === "Available" ? "available-tab" : "unavailable-tab")).classList.add('active');
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
