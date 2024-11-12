@@ -8,8 +8,6 @@ import com.example.MyLibrary.repositories.BorrowedRepository;
 import com.example.MyLibrary.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Date;
 import java.util.List;
@@ -83,13 +81,12 @@ public class LibraryService {
         if (bookOptional.isPresent()) {
             Book book = bookOptional.get();
 
-            // Set the availability status to 'Unavailable'
+            // Set the availability status
             book.setIsAvailable(availabilityStatus.equals("Unavailable") ? Book.Availability.Unavailable : Book.Availability.Available);
 
-            // Save the updated book back to the database
+            // Save the updated book
             bookRepository.save(book);
         } else {
-            // Handle case where book was not found
             throw new RuntimeException("Book not found with ID: " + bookId);
         }
     }

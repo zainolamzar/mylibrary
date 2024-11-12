@@ -1,4 +1,3 @@
-// src/main/java/com/example/MyLibrary/models/Book.java
 package com.example.MyLibrary.models;
 
 import jakarta.persistence.*;

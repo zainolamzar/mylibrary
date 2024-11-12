@@ -37,16 +37,15 @@ public class LibraryController {
         return "library/index";
     }
 
-    // Mapping for the Books page
     @GetMapping("/books")
     public String bookOverview(Model model) {
-        model.addAttribute("allBooks", libraryService.getAllBooks()); // Pass all books to the books page
-        return "library/book-overview"; // Serve the book-overview.html page
+        model.addAttribute("allBooks", libraryService.getAllBooks());
+        return "library/book-overview";
     }
 
     @GetMapping("/create-book")
     public String createBookPage() {
-        return "library/book-create";  // Show the create book form page
+        return "library/book-create";
     }
 
     @PostMapping("/create-book")
@@ -56,8 +55,8 @@ public class LibraryController {
         newBook.setCategory(category);
         newBook.setIsAvailable(Book.Availability.valueOf(isAvailable));
 
-        libraryService.saveBook(newBook); // Save the book via the service layer
-        return "redirect:/books";  // Redirect to the books overview page after creating the book
+        libraryService.saveBook(newBook);
+        return "redirect:/books";
     }
 
     // View Book details
@@ -65,29 +64,29 @@ public class LibraryController {
     public String viewBook(@PathVariable("id") int id, Model model) {
         Book book = libraryService.getBookById(id);
         model.addAttribute("book", book);
-        return "library/book-view"; // Serve the book-view.html page
+        return "library/book-view";
     }
 
     // Edit Book
     @GetMapping("/edit-book/{id}")
     public String editBook(@PathVariable("id") int id, Model model) {
         Book book = libraryService.getBookById(id);
-        model.addAttribute("book", book); // Pass book details
-        return "library/book-edit"; // Serve the book-edit.html page
+        model.addAttribute("book", book);
+        return "library/book-edit";
     }
 
     // Save edited Book
     @PostMapping("/edit-book/{id}")
     public String updateBook(@PathVariable("id") int id, @ModelAttribute Book book) {
-        libraryService.updateBook(id, book); // Update book data
-        return "redirect:/books"; // Redirect to the books page
+        libraryService.updateBook(id, book);
+        return "redirect:/books";
     }
 
     // Delete Book
     @GetMapping("/delete-book/{id}")
     public String deleteBook(@PathVariable("id") int id) {
-        libraryService.deleteBook(id); // Delete the book
-        return "redirect:/books"; // Redirect to the books page after deletion
+        libraryService.deleteBook(id);
+        return "redirect:/books";
     }
 
     // Mapping for librarians page
@@ -184,9 +183,9 @@ public class LibraryController {
         if (borrowedOptional.isPresent()) {
             Borrowed borrowed = borrowedOptional.get();
             model.addAttribute("borrowed", borrowed);
-            return "library/borrow-edit"; // Name of the Thymeleaf template
+            return "library/borrow-edit";
         } else {
-            return "redirect:/"; // Redirect to homepage if the borrowed transaction is not found
+            return "redirect:/";
         }
     }
 

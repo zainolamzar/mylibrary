@@ -51,52 +51,51 @@
   </style>
 </head>
 <body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">MyLibrary</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/books">Books</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/librarians">Librarians</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-<!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg">
-  <a class="navbar-brand" href="/">MyLibrary</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/books">Books</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/librarians">Librarians</a>
-      </li>
-    </ul>
-  </div>
-</nav>
-
-<section class="container">
-  <h2>Edit Book</h2>
-  <form th:action="@{/edit-book/{id}(id=${book.id})}" th:object="${book}" method="post">
-    <div class="form-group">
-      <label for="name">Book Name</label>
-      <input type="text" id="name" th:field="*{name}" class="form-control" />
-    </div>
-    <div class="form-group">
-      <label for="category">Category</label>
-      <input type="text" id="category" th:field="*{category}" class="form-control" />
-    </div>
-    <div class="form-group">
-      <label for="isAvailable">Availability</label>
-      <select id="isAvailable" th:field="*{isAvailable}" class="form-control">
-        <option value="Available">Available</option>
-        <option value="Unavailable">Unavailable</option>
-      </select>
-    </div>
-    <div class="form-group d-flex justify-content-between">
-      <button type="submit" class="btn btn-primary">Save Changes</button>
-      <a href="/books" class="btn btn-secondary">Back</a> <!-- Back button -->
-    </div>
-  </form>
-</section>
+  <section class="container">
+    <h2>Edit Book</h2>
+    <form th:action="@{/edit-book/{id}(id=${book.id})}" th:object="${book}" method="post">
+      <div class="form-group">
+        <label for="name">Book Name</label>
+        <input type="text" id="name" th:field="*{name}" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="category">Category</label>
+        <input type="text" id="category" th:field="*{category}" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="isAvailable">Availability</label>
+        <select id="isAvailable" th:field="*{isAvailable}" class="form-control">
+          <option value="Available">Available</option>
+          <option value="Unavailable">Unavailable</option>
+        </select>
+      </div>
+      <div class="form-group d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="/books" class="btn btn-secondary">Back</a> <!-- Back button -->
+      </div>
+    </form>
+  </section>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>

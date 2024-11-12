@@ -1,4 +1,3 @@
-// src/main/java/com/example/MyLibrary/repositories/BookRepository.java
 package com.example.MyLibrary.repositories;
 
 import com.example.MyLibrary.models.Book;
