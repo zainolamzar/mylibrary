@@ -32,6 +32,12 @@ public class LibraryController {
 
     // Mapping for Home page
     @GetMapping("/")
+    public String redirectToLogin() {
+        return "redirect:/login";
+    }
+
+
+    @GetMapping("/dashboard")
     public String homePage(Model model) {
         model.addAttribute("allBorrowed", libraryService.getAllBorrowedBooks());
         return "library/index";
